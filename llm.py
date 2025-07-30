@@ -25,7 +25,7 @@ from langchain.agents.agent_toolkits import create_retriever_tool
 
 
 State=dict
-db = SQLDatabase.from_uri("sqlite:///C:/Users/abdel/Documents/chinook/Chinook.db")
+db = SQLDatabase.from_uri("sqlite:///C:/Users)
 
 
 if not os.environ.get("GOOGLE_API_KEY"):
