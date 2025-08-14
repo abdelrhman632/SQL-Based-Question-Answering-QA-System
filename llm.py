@@ -1,35 +1,37 @@
-import getpass
 import os
 import ast
 import re
 import atexit
 import asyncio
 import grpc.aio
+from dotenv import load_dotenv
 from typing import TypedDict
-from langchain_core.prompts import ChatPromptTemplate
 from typing_extensions import Annotated
+from langchain_core.prompts import ChatPromptTemplate
 from langchain_community.utilities import SQLDatabase
 from langchain.chat_models import init_chat_model
-from langchain_community.tools.sql_database.tool import QuerySQLDatabaseTool 
+from langchain_community.tools.sql_database.tool import QuerySQLDatabaseTool
 from langgraph.graph import START, StateGraph
-from IPython.display import Image, display
 from langgraph.checkpoint.memory import MemorySaver
-from PIL import Image as PILImage
 from langchain_community.agent_toolkits import SQLDatabaseToolkit
 from langchain_core.messages import HumanMessage
 from langgraph.prebuilt import create_react_agent
 from langchain_google_genai import GoogleGenerativeAIEmbeddings
 from langchain_core.vectorstores import InMemoryVectorStore
 from langchain.agents.agent_toolkits import create_retriever_tool
+from PIL import Image as PILImage
+from IPython.display import Image, display
 
+load_dotenv()
 
+google_api_key = os.getenv("GOOGLE_API_KEY")
+if not google_api_key:
+    raise ValueError("GOOGLE_API_KEY is missing in .env")
+os.environ["GOOGLE_API_KEY"] = google_api_key
+print("GOOGLE_API_KEY loaded")
 
 State=dict
 db = SQLDatabase.from_uri("sqlite:///D:/OneDrive/Desktop/Leipzig/SQL-Based-Question-Answering-QA-System/Chinook.db")
-
-
-if not os.environ.get("GOOGLE_API_KEY"):
-  os.environ["GOOGLE_API_KEY"] = ""
 
 llm = init_chat_model("gemini-2.0-flash", model_provider="google_genai")
 embeddings = GoogleGenerativeAIEmbeddings(model="models/embedding-001")
